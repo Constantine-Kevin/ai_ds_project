@@ -22,10 +22,10 @@ def main():
     neg_dictio_item=negative_library.items()
     negative_library=sorted(neg_dictio_item)
     #Output 
-    with open("positive_library.txt","w") as file:
+    with open("mini_positive_library.txt","w") as file:
         for tuples in positive_library:
             file.write(f"{tuples[0]} {tuples[1]}\n")
-    with open("negative_library.txt","w") as file:
+    with open("mini_negative_library.txt","w") as file:
         for tuples in negative_library:
             file.write(f"{tuples[0]} {tuples[1]}\n")
 main()
