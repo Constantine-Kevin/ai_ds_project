@@ -26,8 +26,8 @@ def preprocess_string(str_arg,dictio):
     cleaned_str=cleaned_str.lower() 
     cleaned_str_list= cleaned_str.split()
     #Remove stopwords and lemmatize
-    #without_sw = [lemmatizer.lemmatize(word) for word in cleaned_str_list if not word in stop_word]
-    without_sw = [word for word in cleaned_str_list if not word in stop_word]
+    without_sw = [lemmatizer.lemmatize(word) for word in cleaned_str_list if not word in stop_word]
+    #without_sw = [word for word in cleaned_str_list if not word in stop_word]
     without_sw.sort()
     #Put result in a dictio
     for i in without_sw:
