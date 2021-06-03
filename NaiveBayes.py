@@ -23,8 +23,16 @@ def findTermInLibrary(term, library):
             return pair
     return ("a", 0)
 
-def findProbabilityOfTermInClass():
-    
-
-def train(self, dataset, labels):
-    return
+def naivebayes(word_list,pos_dict,neg_dict):
+    #Acumulator
+    p_positive=0.5
+    p_negative=0.5
+    for i in word_list:
+        #P(i|positive)
+        p_positive*=pos_dict.get(i,0)+1/sum(pos_dict.values())+1
+        #P(i|negative)
+        p_negative*=neg_dict.get(i,0)+1/sum(neg_dict.values())+1
+    if p_positive>p_negative:
+        return "positive"
+    else:
+        return "negative"

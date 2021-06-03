@@ -4,7 +4,7 @@ import contractions
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer 
 #Lemmatizer
-nltk.download('wordnet')
+#nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
 #List Of Stopwords
 stop_word=stopwords.words('english')
@@ -32,7 +32,7 @@ def preprocess_string(str_arg,dictio):
     for i in without_sw:
         dictio[i]=dictio.get(i,0)+1
     #print(dictio)
-    return
+    return without_sw
 
 def main():
     a="i just saw this movie on TV..<br /><br />i've lost my dad when i was young and this movie surely did touch me..<br /><br />i can feel the lost that the little girl Desi felt..<br /><br />the feeling of wanting to see her father again..<br /><br />wanting to talk to him..<br /><br />or at least given the chance to say goodbye..<br /><br />and i'm so touched with the letter that was wrote back to her..<br /><br />saying that her father read her letter, and sent it back to someone to reply her and buy her a present because there isn't a shop in heaven..<br /><br />it just lets me feel that miracles do exist.."
