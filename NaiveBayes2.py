@@ -27,17 +27,20 @@ def naivebayes(word_list,pos_dict,neg_dict):
     #Acumulator
     p_positive=0.5
     p_negative=0.5
-    #Count how many zeros
+    #Count how many zeros will happen
     pos_zero_to_add=0
     neg_zero_to_add=0
     for i in word_list:
-        
+        if pos_dict.get(i,0)==0:
+            pos_zero_to_add+=1
+        if neg_dict.get(i,0)==0:
+            neg_zero_to_add+=1
 
     for i in word_list:
         #P(i|positive)
-        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + len(pos_dict) + 1)
+        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + len(pos_dict) + pos_zero_to_add)
         #P(i|negative)
-        p_negative *= (neg_dict.get(i,0)+1)/(sum(neg_dict.values()) + len(neg_dict) + 1)
+        p_negative *= (neg_dict.get(i,0)+1)/(sum(neg_dict.values()) + len(neg_dict) + neg_zero_to_add)
     
     if p_positive>p_negative:
         return "positive"
