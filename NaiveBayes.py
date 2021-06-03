@@ -27,11 +27,17 @@ def naivebayes(word_list,pos_dict,neg_dict):
     #Acumulator
     p_positive=0.5
     p_negative=0.5
+
+    # Contains all the words in the dataset
+    vocab_dict = {**pos_dict, **neg_dict}
+    vocab_size = len(vocab_dict)
+
     for i in word_list:
         #P(i|positive)
-        p_positive*=pos_dict.get(i,0)+1/sum(pos_dict.values())+1
+        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + vocab_size + 1)
         #P(i|negative)
-        p_negative*=neg_dict.get(i,0)+1/sum(neg_dict.values())+1
+        p_negative *= (neg_dict.get(i,0)+1)/(sum(neg_dict.values()) + vocab_size + 1)
+    
     if p_positive>p_negative:
         return "positive"
     else:
