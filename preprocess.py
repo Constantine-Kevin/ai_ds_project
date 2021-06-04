@@ -3,6 +3,7 @@ import re
 import contractions
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer 
+
 #Lemmatizer
 #nltk.download('wordnet')
 lemmatizer = WordNetLemmatizer()
@@ -11,7 +12,8 @@ stop_word=stopwords.words('english')
 stop_word.remove('not')
 
 #Uncomment below ONCE if the file isn't installed in computer
-#nltk.download('stopwords')
+nltk.download('stopwords')
+
 def preprocess_string(str_arg,dictio):
     #Clean the string from any HTML Tag
     cleanr = re.compile('<.*?>')
