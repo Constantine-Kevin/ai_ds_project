@@ -34,7 +34,7 @@ def naivebayes(word_list,pos_dict,neg_dict):
 
     for i in word_list:
         #P(i|positive)
-        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + vocab_size + 1)
+        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + vocab_size*(pos_zero_to_add+neg_zero_to_add) +pos_zero_to_add)
         #P(i|negative)
         p_negative *= (neg_dict.get(i,0)+1)/(sum(neg_dict.values()) + vocab_size + 1)
     

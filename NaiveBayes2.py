@@ -38,9 +38,9 @@ def naivebayes(word_list,pos_dict,neg_dict):
 
     for i in word_list:
         #P(i|positive)
-        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + len(pos_dict) + pos_zero_to_add)
+        p_positive *= (pos_dict.get(i,0)+1)/(sum(pos_dict.values()) + len(pos_dict)*(pos_zero_to_add+ neg_zero_to_add)+ pos_zero_to_add)
         #P(i|negative)
-        p_negative *= (neg_dict.get(i,0)+1)/(sum(neg_dict.values()) + len(neg_dict) + neg_zero_to_add)
+        p_negative *= (neg_dict.get(i,0)+1)/(sum(neg_dict.values()) + len(neg_dict)*(pos_zero_to_add+ neg_zero_to_add) + neg_zero_to_add)
     
     if p_positive>p_negative:
         return "positive"

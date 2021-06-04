@@ -45,6 +45,7 @@ def main():
     print("Finished compute positive")                    
     #Add to negative dictio
     print("Start with negative")
+ 
     for i in negative_test:
         with open("test/neg/"+i, 'r',encoding='utf8') as file:
             print("test/neg/"+i)
@@ -54,6 +55,7 @@ def main():
                 confirm_negative+=1
             else:
                 error_negative+=1
+        
     print("Finished compute negative")
     print("Final Result")
     print(confirm_positive)
