@@ -7,12 +7,14 @@ def main():
     negative_text=os.listdir('train/neg')
     positive_library={}
     negative_library={}
+
     print("Start positive dictio")
     #Add to positive dictio
     for i in positive_text:
         with open("train/pos/"+i, 'r',encoding='utf8') as file:
             data = file.read().replace('\n', ' ')
             preprocess_string(data,positive_library)
+
     print("Start negative dictio")
     #Add to negative dictio
     for i in negative_text:
@@ -20,17 +22,14 @@ def main():
             data = file.read().replace('\n', ' ')
             preprocess_string(data,negative_library)
     print("Finished creating dictio, starting naive bayes")
-    #Sort Dictio by key
-#    pos_dictio_item=positive_library.items()
-#    positive_library=sorted(pos_dictio_item) # List of tuples, contains word freq per class
-#    neg_dictio_item=negative_library.items()
-#    negative_library=sorted(neg_dictio_item)
+
     positive_test=os.listdir('test/pos')
     negative_test=os.listdir('test/neg')
     confirm_positive=0
     error_positive=0
     confirm_negative=0
     error_negative=0
+
     print("Start the positive")
     #Add to positive dictio
     for i in positive_test:
@@ -54,6 +53,7 @@ def main():
                 confirm_negative+=1
             else:
                 error_negative+=1
+    
     print("Finished compute negative")
     print("Final Result")
     print(confirm_positive)
