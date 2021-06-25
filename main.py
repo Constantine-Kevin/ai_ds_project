@@ -1,76 +1,88 @@
+#Import modules Used
+from sklearn.datasets import load_files
+
 import os
-from preprocess import preprocess_string
-from NaiveBayes import naivebayes
-def main():
-    #Initialization
-    positive_text=os.listdir('train/pos')
-    negative_text=os.listdir('train/neg')
-    positive_library={}
-    negative_library={}
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
 
-    print("Start positive dictio")
-    #Add to positive dictio
-    for i in positive_text:
-        with open("train/pos/"+i, 'r',encoding='utf8') as file:
-            data = file.read().replace('\n', ' ')
-            preprocess_string(data,positive_library)
+# Import which type of preprocessing do you want to use:
+# Each preprocessing will remove HTML tag, expanding contraction, and remove
+# non-alphabetic characters
+# preprocess    = No additional feature
+# preprocess2   = Lemmatize only
+# preprocess3   = Remove stopwords only
+# preprocess4   = Use both lemmatizer and removing stopwords
+from preprocess3 import preprocess_string
 
-    print("Start negative dictio")
-    #Add to negative dictio
-    for i in negative_text:
-        with open("train/neg/"+i, 'r',encoding='utf8') as file:
-            data = file.read().replace('\n', ' ')
-            preprocess_string(data,negative_library)
-    print("Finished creating dictio, starting naive bayes")
+#Load folder minitrain as bunch, each data will have a
+a=load_files("train")
 
-    positive_test=os.listdir('test/pos')
-    negative_test=os.listdir('test/neg')
-    confirm_positive=0
-    error_positive=0
-    confirm_negative=0
-    error_negative=0
+#Utility to print filename
+#print(a.filenames)
 
-    print("Start the positive")
-    #Add to positive dictio
-    for i in positive_test:
+print("Load done commencing preprocessing")
+for i in range(len(a.data)):
+    #Convert data from byte into string and preprocess
+    a.data[i]=preprocess_string(a.data[i].decode("utf-8"))
+
+
+print("Preprocess done, commencing frequency count")
+#Count frequency
+vect= CountVectorizer()
+a_count= vect.fit_transform(a.data)
+#print(vect.get_feature_names())
+#print(a_count.shape)
+#print(a_count.toarray())
+print("Count done, commencing naive bayes")
+
+#Initiate Multinomial Naive Bayes and train using the train dataset
+clf = MultinomialNB().fit(a_count, a.target)
+print("Training done commencing test")
+#Testing for positive dataset
+docs_new=[]
+testdir=os.listdir("test/pos")
+#Load all positive test dataset text and preprocess
+for i in testdir:
         with open("test/pos/"+i, 'r',encoding='utf8') as file:
-            print("test/pos/"+i)
+            #Debug on which file it is in
+            #print("test/pos/"+i)
             data = file.read().replace('\n', ' ')
-            data=preprocess_string(data,{})
-            if naivebayes(data,positive_library,negative_library)=="positive":
-                confirm_positive+=1
-            else:
-                error_positive+=1
-    print("Finished compute positive")                    
-    #Add to negative dictio
-    print("Start with negative")
-    for i in negative_test:
+            data=preprocess_string(data)
+            docs_new.append(data)
+print("Done importing positive dataset, commencing test")
+x=vect.transform(docs_new)
+predicted = clf.predict(x)
+#Count the result
+true_pos=0
+false_neg=0
+for doc, category in zip(docs_new, predicted):
+    if a.target_names[category]=="pos":
+        true_pos+=1
+    else:
+        false_neg+=1
+#Testing for negative dataset
+docs_new2=[]
+testdir=os.listdir("test/neg")
+#Load all negative test dataset text and preprocess
+for i in testdir:
         with open("test/neg/"+i, 'r',encoding='utf8') as file:
-            print("test/neg/"+i)
+            #Debug on which file it is in
+            #print("test/neg/"+i)
             data = file.read().replace('\n', ' ')
-            data=preprocess_string(data,{})
-            if naivebayes(data,positive_library,negative_library)=="negative":
-                confirm_negative+=1
-            else:
-                error_negative+=1
-    
-    print("Finished compute negative")
-    print("Final Result")
-    print(confirm_positive)
-    print(error_positive)
-    print(confirm_negative)
-    print(error_negative)
-    total=sum([confirm_positive,confirm_negative,error_positive,error_negative])
-    print(f"Accuracy:{(confirm_positive+confirm_negative)/(total)}")
-    
-
-#    #Output 
-#    with open("positive_library.txt","w",encoding='utf8') as file:
-#        for tuples in positive_library:
-#            file.write(f"{tuples[0]} {tuples[1]}\n")
-#    with open("negative_library.txt","w",encoding='utf8') as file:
-#        for tuples in negative_library:
-#            file.write(f"{tuples[0]} {tuples[1]}\n")
-
-if __name__ == "__main__":
-	main()
+            data=preprocess_string(data)
+            docs_new2.append(data)
+print("Done importing negative dataset, commencing test")
+x2=vect.transform(docs_new2)
+predicted2 = clf.predict(x2)
+true_neg=0
+false_pos=0
+#Count the result
+for doc, category in zip(docs_new2, predicted2):
+    if a.target_names[category]=="neg":
+        true_neg+=1
+    else:
+        false_pos+=1
+print(f"Amount of True Positive: {true_pos}")
+print(f"Amount of False Negative:{false_neg}")
+print(f"Amount of True Negative:{true_neg}")
+print(f"Amount of False Negative:{false_pos}")

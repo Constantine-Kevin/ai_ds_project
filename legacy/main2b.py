@@ -1,6 +1,6 @@
 import os
 from preprocess2 import preprocess_string
-from NaiveBayes2 import naivebayes
+from NaiveBayes import naivebayes
 def main():
     #Initialization
     positive_text=os.listdir('train/pos')
