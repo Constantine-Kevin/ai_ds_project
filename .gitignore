@@ -1,4 +1,7 @@
 train/**
 test/**
 minitrain/**
+venv/**
 *.JPG
+.idea/**
+__pycache__/**
